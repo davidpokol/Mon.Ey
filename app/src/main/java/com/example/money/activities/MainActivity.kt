@@ -1,16 +1,14 @@
-package com.example.money
+package com.example.money.activities
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.money.R
 import com.example.money.databinding.ActivityMainBinding
+import com.example.money.model.Money
 import java.text.SimpleDateFormat
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
-    companion object {
-        @JvmStatic var goal = null
-    }
-    var curr = Curreny.FORINT
 
     private lateinit var binding: ActivityMainBinding
 
@@ -35,10 +33,11 @@ class MainActivity : AppCompatActivity() {
             binding.greetingTextView.text = getString(R.string.greeting_night)
         }
 
-        if(goal==null) {
+        if(Money.getGoal()==null) {
             binding.goalTextView.text = getString(R.string.set_goal_warning)
         } else {
-            binding.goalTextView.text = getMonth() + " még ennyit költhetsz:\n" + goal +" "+ curr
+            binding.goalTextView.text = getMonth() + " még ennyit költhetsz:\n" +
+                    Money.getGoal() +" "+ Money.getCurrency()
         }
 
     }
