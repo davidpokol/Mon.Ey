@@ -19,7 +19,9 @@
     <string name="in_month_november">Novemberben</string>
     <string name="in_month_december">Decemberben</string>
 
-    <string name="set_goal_warning">Kérlek állítsd be a havi célodat!\n💸💸💸</string>
+    <string name="set_goal_warning">Kérlek, állítsd be a havi célodat!\n💸💸💸</string>
+    <string name="limit_reached_warning">Sajnálom, elérted a havi limitet!\n😟😟</string>
+    <string name="limit_exceeded_warning">Ajjaj, túllépted a havi limitet!\n😨😨</string>
     <string name="title_activity_tab">Tab</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
