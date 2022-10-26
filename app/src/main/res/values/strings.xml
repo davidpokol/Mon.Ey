@@ -1,11 +1,12 @@
 <resources>
     <string name="app_name">Mon.Ey</string>
 
+    <!--MAIN ACTIVITY-->
     <string name="greeting_morning">Szép reggelt!</string>
     <string name="greeting_afternoon">Szép napot!</string>
     <string name="greeting_night">Szép estét!</string>
 
-    <!-- HÓNAPOK -->
+    <!-- months -->
     <string name="in_month_january">Januárban</string>
     <string name="in_month_february">Februárban</string>
     <string name="in_month_march">Márciusban</string>
@@ -22,6 +23,15 @@
     <string name="set_goal_warning">Kérlek, állítsd be a havi célodat!\n💸💸💸</string>
     <string name="limit_reached_warning">Sajnálom, elérted a havi limitet!\n😟😟</string>
     <string name="limit_exceeded_warning">Ajjaj, túllépted a havi limitet!\n😨😨</string>
+
+
+    <!-- SETTINGS-->
+
+    <string name="currency_label">Pénznem:</string>
+    <string name="settings_label">Beállítások</string>
+    <string name="goal_label">Havi cél:</string>
+
+
     <string name="title_activity_tab">Tab</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>

@@ -1,17 +1,17 @@
 package com.example.money.activities
 
 import android.annotation.SuppressLint
-import android.content.res.Resources
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-
 import com.example.money.R
 import com.example.money.databinding.ActivityMainBinding
 import com.example.money.model.Money
 import com.example.money.util.DateTimeUtil
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -39,25 +39,12 @@ class MainActivity : AppCompatActivity() {
         } else {
             binding.greetingTextView.text = getString(R.string.greeting_night)
         }
-
-        if (Money.getGoal() == null || Money.getGoal() == 0) {
-            binding.goalTextView.text = getString(R.string.set_goal_warning)
-        } else {
-
-            if (Money.getSpendableMoney() == 0) {
-                binding.goalTextView.text = getString(R.string.limit_reached_warning)
-            } else if (Money.getSpendableMoney() < 0) {
-                binding.goalTextView.text = getString(R.string.limit_exceeded_warning)
-            } else {
-                binding.goalTextView.text = getMonth() + " még ennyit költhetsz:\n" +
-                        Money.getGoal() + " " + Money.getCurrency()
-            }
-        }
-
+        setGoalLabel()
 
         binding.tabImageButton.setOnClickListener {
 
-            binding.drawerLayout.open()
+            val s = Intent(this@MainActivity, com.example.money.activities.ExchangeActivity::class.java)
+            startActivity(s)
         }
     }
     fun getMonth(): String {
@@ -78,6 +65,21 @@ class MainActivity : AppCompatActivity() {
             12 -> getString(R.string.in_month_december)
             else -> {
                 ""
+            }
+        }
+    }
+    fun setGoalLabel() {
+        if (Money.getGoal() == null || Money.getGoal() == 0) {
+            binding.goalTextView.text = getString(R.string.set_goal_warning)
+        } else {
+
+            if (Money.getSpendableMoney() == 0) {
+                binding.goalTextView.text = getString(R.string.limit_reached_warning)
+            } else if (Money.getSpendableMoney() < 0) {
+                binding.goalTextView.text = getString(R.string.limit_exceeded_warning)
+            } else {
+                binding.goalTextView.text = getMonth() + " még ennyit költhetsz:\n" +
+                        Money.getGoal() + " " + Money.getCurrency()
             }
         }
     }

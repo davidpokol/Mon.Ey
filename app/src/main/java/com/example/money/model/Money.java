@@ -1,11 +1,11 @@
 package com.example.money.model;
-
 import com.example.money.enums.Currency;
+
 
 public class Money {
 
-    private static Integer goal = 1000;
-    private static int moneySpent = 1;
+    private static Integer goal = null;
+    private static int moneySpent = 0;
     private static Currency currency = Currency.FORINT;
 
     public Money() {
@@ -38,4 +38,5 @@ public class Money {
     public static void setCurrency(Currency currency) {
         Money.currency = currency;
     }
+
 }
