@@ -1,14 +1,15 @@
 package com.example.money.util
 
 import android.annotation.SuppressLint
-import android.content.res.Resources
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import com.example.money.R
 import java.text.SimpleDateFormat
 import java.util.*
 
 @SuppressLint("SimpleDateFormat")
-class DateTimeUtil {
+class DateTimeUtil : AppCompatActivity(){
+
     fun getDateString(): String {
 
         val sdf = SimpleDateFormat("yyyy. MM. dd.")
@@ -21,6 +22,4 @@ class DateTimeUtil {
         val currentDate = sdf.format(Date())
         return currentDate.toInt()
     }
-
-
 }

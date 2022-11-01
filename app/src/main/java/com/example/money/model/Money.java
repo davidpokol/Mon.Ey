@@ -4,38 +4,25 @@ import com.example.money.enums.Currency;
 
 public class Money {
 
-    private static Integer goal = null;
-    private static int moneySpent = 0;
+    private static int goal = 0;
     private static Currency currency = Currency.FORINT;
 
     public Money() {
     }
 
-    public static Integer getGoal() {
+    public Integer getGoal() {
         return goal;
     }
 
-    public static void setGoal(Integer goal) {
+    public void setGoal(Integer goal) {
         Money.goal = goal;
     }
 
-    public static int getMoneySpent() {
-        return moneySpent;
-    }
-
-    public static int getSpendableMoney() {
-        return goal - moneySpent;
-    }
-
-    public static void setMoneySpent(int moneySpent) {
-        Money.moneySpent = moneySpent;
-    }
-
-    public static Currency getCurrency() {
+    public Currency getCurrency() {
         return currency;
     }
 
-    public static void setCurrency(Currency currency) {
+    public void setCurrency(Currency currency) {
         Money.currency = currency;
     }
 

@@ -8,7 +8,7 @@
     android:focusableInTouchMode="true"
     android:orientation="vertical"
 
-    tools:context=".activities.ExchangeActivity">
+    tools:context=".activity.ExchangeActivity">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view"
@@ -182,16 +182,16 @@
     android:layout_marginLeft="10dp"
     android:paddingTop="20sp">
 
-    <Button
-        android:id="@+id/conversionButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingTop="7dp"
-        android:layout_marginBottom="7dp"
-        android:text="Convert"
-        android:backgroundTint="@color/white"
-        android:textColor="@color/money_dark_green"/>
+            <Button
+                android:id="@+id/conversionButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="7dp"
+                android:backgroundTint="@color/white"
+                android:gravity="center"
+                android:paddingTop="7dp"
+                android:text="Convert"
+                android:textColor="@color/money_dark_green" />
 
         </RelativeLayout>
     </LinearLayout>
