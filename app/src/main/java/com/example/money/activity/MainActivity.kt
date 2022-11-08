@@ -13,6 +13,7 @@ import com.example.money.model.Money
 import com.example.money.model.Purchase
 import com.example.money.model.Purchases
 import com.example.money.util.DateTimeUtil
+import com.example.money.util.StringUtil
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
@@ -28,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     private val dateTimeUtil = DateTimeUtil()
     private val money = Money()
     private val purchases = Purchases()
+    private val stringUtil = StringUtil()
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var pieEntriesList: ArrayList<PieEntry>
@@ -90,7 +92,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.goalTextView.text = String.format(getString(R.string.goal_info_message),
             getMonth(),
-            getSpendableMoney(),
+            stringUtil.formatAmount(getSpendableMoney()),
             getCurrencyText(money.currency))
 
     }

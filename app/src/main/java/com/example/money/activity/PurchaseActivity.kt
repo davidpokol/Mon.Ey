@@ -13,6 +13,7 @@ import com.example.money.enums.Currency
 import com.example.money.model.Money
 import com.example.money.model.Purchase
 import com.example.money.model.Purchases
+import com.example.money.util.StringUtil
 import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
@@ -22,7 +23,7 @@ class PurchaseActivity : AppCompatActivity() {
 
     private val money = Money()
     private val purchases = Purchases()
-
+    private val stringUtil = StringUtil()
     private val myCalendar = Calendar.getInstance()
     private lateinit var dateEditText: EditText
 
@@ -32,6 +33,7 @@ class PurchaseActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         dateEditText = findViewById(R.id.dateEditText)
+
         val purchasePlaceEditText : EditText = findViewById(R.id.purchasePlaceEditText)
         val amountTextView : EditText = findViewById(R.id.amountEditText)
         val currencySpinner : Spinner = findViewById(R.id.currencySpinner)
@@ -40,8 +42,9 @@ class PurchaseActivity : AppCompatActivity() {
         var currencySpinnerValue : Currency = Currency.FORINT
         var categorySpinnerValue: Category = Category.OTHER
 
+        amountTextView.addTextChangedListener(stringUtil.onTextChangedListener(amountTextView))
         val date =
-            OnDateSetListener { view, year, month, day ->
+            OnDateSetListener { _, year, month, day ->
                 myCalendar.set(Calendar.YEAR, year)
                 myCalendar.set(Calendar.MONTH, month)
                 myCalendar.set(Calendar.DAY_OF_MONTH, day)
@@ -56,8 +59,6 @@ class PurchaseActivity : AppCompatActivity() {
                 myCalendar.get(Calendar.DAY_OF_MONTH)
             ).show()
         })
-
-
 
         currencySpinner.adapter = ArrayAdapter<Currency>(
             this, android.R.layout.simple_spinner_item, Currency.values())
