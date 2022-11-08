@@ -4,7 +4,7 @@ import com.example.money.enums.Currency;
 
 public class Money {
 
-    private static int goal = 0;
+    private static Integer goal = 0;
     private static Currency currency = Currency.FORINT;
 
     public Money() {

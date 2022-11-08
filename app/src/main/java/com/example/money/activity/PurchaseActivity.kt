@@ -147,6 +147,10 @@ class PurchaseActivity : AppCompatActivity() {
         }
 
     }
+    override fun onBackPressed() {
+        super.onBackPressed()
+        this.finish()
+    }
 
     private fun addPurchaseToMonitorData(p : Purchase) {
         purchases.addPurchase(p)
@@ -162,10 +166,6 @@ class PurchaseActivity : AppCompatActivity() {
                 purchases.removePurchaseById(p.id)
             }
         }
-    }
-    override fun onBackPressed() {
-        super.onBackPressed()
-        this.finish()
     }
 
     private fun updateLabel() {

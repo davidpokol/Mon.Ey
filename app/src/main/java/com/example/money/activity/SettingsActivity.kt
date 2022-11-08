@@ -25,11 +25,19 @@ class SettingsActivity : AppCompatActivity() {
         val currencySpinner: Spinner = findViewById(R.id.currency_spinner)
         val goalEditText: EditText = findViewById(R.id.editTextNumber)
 
+        if (money.goal != null && money.goal != 0) {
+            goalEditText.setText(money.goal.toString())
+        }
+
         currencySpinner.adapter = ArrayAdapter<Currency>(
             this, android.R.layout.simple_spinner_item, Currency.values())
 
+        currencySpinner.setSelection(Currency.values().indexOf(money.currency))
+
         goalEditText.addTextChangedListener {
-            money.goal = Integer.valueOf(goalEditText.text.toString())
+            try{
+                money.goal = Integer.valueOf(goalEditText.text.toString())
+            } catch ( _ : Exception) {}
         }
 
         currencySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
