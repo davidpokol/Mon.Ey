@@ -17,35 +17,45 @@
         android:textColor="@color/money_dark_green"
         android:textSize="30sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/gridLayout"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 
     <androidx.gridlayout.widget.GridLayout
+
         android:id="@+id/gridLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         app:columnCount="2"
-        app:rowCount="8"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/border"
+        app:rowCount="8">
 
         <TextView
             android:id="@+id/date_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="dátum"
+            android:layout_marginLeft="5dp"
+            android:fontFamily="@font/roboto_mono"
+            android:text="@string/date"
             android:textAlignment="center"
             android:textColor="@color/money_dark_green"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
 
         <EditText
             android:id="@+id/dateEditText"
-            android:layout_width="wrap_content"
+
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:hint="kopp ide"
+            android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:clickable="false"
             android:cursorVisible="false"
@@ -53,72 +63,75 @@
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:inputType="date"
-            android:text="@string/empty_string" />
+            android:fontFamily="@font/roboto_mono" />
 
         <TextView
             android:id="@+id/placeTextView"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="vársárlás helye"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
+            android:fontFamily="@font/roboto_mono"
+            android:text="@string/place_of_purchase"
             android:textAlignment="center"
             android:textColor="@color/money_dark_green"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
 
         <EditText
             android:id="@+id/purchasePlaceEditText"
-            android:layout_width="wrap_content"
+            android:layout_marginRight="5dp"
+            android:hint="pl.: TESCO"
+            android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Vársárlás helye"
             android:inputType="textPersonName"
-            android:text="@string/empty_string"
-            tools:ignore="MissingConstraints" />
+            android:fontFamily="@font/roboto_mono"/>
 
         <TextView
             android:id="@+id/amountTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="összeg"
+            android:layout_marginLeft="5dp"
+
+            android:fontFamily="@font/roboto_mono"
+            android:text="@string/amount"
             android:textAlignment="center"
             android:textColor="@color/money_dark_green"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
 
         <EditText
             android:id="@+id/amountEditText"
-            android:layout_width="wrap_content"
+            android:layout_marginRight="5dp"
+            android:hint="0"
+            android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="number"
-            android:text="@string/empty_string" />
-
-        <TextView
-            android:id="@+id/currencyTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="valuta"
-            android:textAlignment="center"
-            android:textColor="@color/money_dark_green"
-            android:textSize="20sp" />
-
-        <Spinner
-            android:id="@+id/currencySpinner"
-            android:layout_width="209dp"
-            android:layout_height="42dp"
-            tools:ignore="MissingConstraints" />
+            android:fontFamily="@font/roboto_mono"/>
 
         <TextView
             android:id="@+id/categoryTextView"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="kategória"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/roboto_mono"
+            android:paddingBottom="5dp"
+            android:text="@string/category"
             android:textAlignment="center"
             android:textColor="@color/money_dark_green"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
 
         <Spinner
             android:id="@+id/categorySpinner"
-            android:layout_width="209dp"
-            android:layout_height="42dp" />
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_mono"/>
 
     </androidx.gridlayout.widget.GridLayout>
 
@@ -126,16 +139,29 @@
         android:id="@+id/submitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:backgroundTint="@color/money_dark_green"
+        android:fontFamily="@font/roboto_mono"
         android:gravity="center"
         android:paddingTop="7dp"
         android:text="@string/add_purchase_button_label"
         android:textColor="@color/white"
+        android:textSize="25sp"
         app:cornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gridLayout" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="351dp"
+        android:layout_height="78dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:scaleType="fitEnd"
+        app:layout_constraintBottom_toTopOf="@+id/gridLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/desk" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

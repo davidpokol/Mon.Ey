@@ -14,48 +14,37 @@ class StringUtil {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable) {
-                editText.removeTextChangedListener(this)
-                try {
-                    var originalString = s.toString()
-                    val longval: Long
-                    if (originalString.contains(",")) {
-                        originalString = originalString.replace(",".toRegex(), "")
-                    }
-                    longval = originalString.toLong()
-                    val formatter: DecimalFormat =
-                        NumberFormat.getInstance(Locale.US) as DecimalFormat
-                    formatter.applyPattern("#,###,###,###")
-                    val formattedString: String = formatter.format(longval)
+               try {
+                    if(editText.text.toString().isNotEmpty()){
 
-                    //setting text after format to EditText
-                    editText.setText(formattedString)
-                    editText.setSelection(editText.text.length)
-                } catch (nfe: NumberFormatException) {
-                    nfe.printStackTrace()
-                }
-                editText.addTextChangedListener(this)
+                        editText.removeTextChangedListener(this)
+                        editText.setText(formatAmount(s.toString()))
+                        editText.setSelection(editText.text.length)
+                    }
+               } catch ( _ : Exception) {} finally {
+                   editText.addTextChangedListener(this)
+               }
+
             }
         }
     }
-    fun formatAmount(amount: Int): String {
-        val s = StringBuilder(amount.toString())
-        if (s.length < 3) {
-            return s.toString()
-        }
-        var count = 0
-        for (i in s.length downTo 1) {
-            if (count == 3) {
-                s.insert(i, ",")
-                count = 0
-            }
-            count++
-        }
-        return s.toString()
+    fun formatAmount(amount: String): String {
+
+        val originalString = deFormatAmount(amount.trim())
+        val longVal: Long = originalString.toLong()
+        val formatter: DecimalFormat =
+            NumberFormat.getInstance() as DecimalFormat
+        formatter.applyPattern("#,###,###,###")
+        return formatter.format(longVal)
     }
 
 
     fun deFormatAmount(s: String): Int {
-        return s.replace(",", "").toInt()
+
+        if (s.contains(",")) {
+            return s.replace(",", "").toInt()
+        }
+        return s.toInt()
     }
 
 }

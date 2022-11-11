@@ -22,7 +22,7 @@ import java.util.*
 class SettingsActivity : AppCompatActivity() {
 
     private val money = Money()
-    private val stringUtil  = StringUtil()
+    private val stringUtil = StringUtil()
 
     private lateinit var goalEditText: EditText
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,20 +34,30 @@ class SettingsActivity : AppCompatActivity() {
         val currencySpinner: Spinner = findViewById(R.id.currency_spinner)
 
         if (money.goal != null && money.goal != 0) {
-            goalEditText.setText(stringUtil.formatAmount(money.goal))
+            goalEditText.setText(stringUtil.formatAmount(money.goal.toString()))
         }
 
         currencySpinner.adapter = ArrayAdapter<Currency>(
-            this, android.R.layout.simple_spinner_item, Currency.values())
+            this, android.R.layout.simple_spinner_item, Currency.values()
+        )
 
         currencySpinner.setSelection(Currency.values().indexOf(money.currency))
 
         goalEditText.addTextChangedListener {
-            try{
+            try {
+                if(goalEditText.text.isEmpty()){
+                    money.goal = 0;
+                } else {
+                    money.goal = Integer.valueOf(
+                        stringUtil.deFormatAmount(
+                            goalEditText.text.toString()
+                        )
+                    )
 
-                money.goal = Integer.valueOf(stringUtil.deFormatAmount(
-                    goalEditText.text.toString()))
-            } catch ( _ : Exception) {}
+                }
+
+            } catch (_: Exception) {
+            }
 
         }
 

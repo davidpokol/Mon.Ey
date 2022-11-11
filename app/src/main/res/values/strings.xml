@@ -37,8 +37,15 @@
 
 
     <!--ADD PURCHASE-->
-
     <string name="add_purchase_label">Vársárlás hozzáadása</string>
+
+    <string name="category">kategória</string>
+    <string name="currency">valuta</string>
+    <string name="amount">összeg</string>
+    <string name="place_of_purchase">vársárlás helye</string>
+    <string name="date">dátum</string>
+    <string name="purchase_added">Vársárlás hozzáadva!</string>
+
     <string name="add_purchase_button_label">HOZZÁAD</string>
 
     <string name="fill_date_field_warning">
@@ -55,6 +62,5 @@
 
     <!-- UTIL -->
     <string name="empty_string"> </string>
-
 
 </resources>

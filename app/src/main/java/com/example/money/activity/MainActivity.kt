@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.goalTextView.text = String.format(getString(R.string.goal_info_message),
             getMonth(),
-            stringUtil.formatAmount(getSpendableMoney()),
+            stringUtil.formatAmount(getSpendableMoney().toString()),
             getCurrencyText(money.currency))
 
     }
