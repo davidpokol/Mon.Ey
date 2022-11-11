@@ -56,7 +56,7 @@ class PurchaseActivity : AppCompatActivity() {
                 myCalendar.get(Calendar.MONTH),
                 myCalendar.get(Calendar.DAY_OF_MONTH)
             )
-            datePickerDialog.datePicker.minDate = Date(2022,1,1).time
+            datePickerDialog.datePicker.minDate = 1640995261000 // 2022,01,01
             datePickerDialog.datePicker.maxDate = Date().time
             datePickerDialog.show()
         }

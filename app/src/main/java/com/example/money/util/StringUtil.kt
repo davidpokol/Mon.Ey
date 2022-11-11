@@ -14,26 +14,30 @@ class StringUtil {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable) {
-               try {
-                    if(editText.text.toString().isNotEmpty()){
+                try {
+                    if (editText.text.toString().isNotEmpty()) {
 
                         editText.removeTextChangedListener(this)
                         editText.setText(formatAmount(s.toString()))
                         editText.setSelection(editText.text.length)
                     }
-               } catch ( _ : Exception) {} finally {
-                   editText.addTextChangedListener(this)
-               }
+                } catch (_: Exception) {
+                } finally {
+                    editText.addTextChangedListener(this)
+                }
 
             }
         }
     }
+
+    private val formatter: DecimalFormat = NumberFormat.getInstance() as DecimalFormat
+    private val groupingSeparator: String =
+        formatter.decimalFormatSymbols.groupingSeparator.toString()
+
     fun formatAmount(amount: String): String {
 
         val originalString = deFormatAmount(amount.trim())
         val longVal: Long = originalString.toLong()
-        val formatter: DecimalFormat =
-            NumberFormat.getInstance() as DecimalFormat
         formatter.applyPattern("#,###,###,###")
         return formatter.format(longVal)
     }
@@ -41,8 +45,8 @@ class StringUtil {
 
     fun deFormatAmount(s: String): Int {
 
-        if (s.contains(",")) {
-            return s.replace(",", "").toInt()
+        if (s.contains(groupingSeparator)) {
+            return s.replace(groupingSeparator, "").toInt()
         }
         return s.toInt()
     }
