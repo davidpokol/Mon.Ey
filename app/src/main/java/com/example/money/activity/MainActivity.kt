@@ -8,8 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.money.R
 import com.example.money.databinding.ActivityMainBinding
-import com.example.money.enums.Currency
-import com.example.money.model.Money
+import com.example.money.model.Settings
 import com.example.money.model.Purchase
 import com.example.money.model.Purchases
 import com.example.money.util.DateTimeUtil
@@ -27,7 +26,7 @@ import kotlin.collections.ArrayList
 class MainActivity : AppCompatActivity() {
 
     private val dateTimeUtil = DateTimeUtil()
-    private val money = Money()
+    private val settings = Settings()
     private val purchases = Purchases()
     private val stringUtil = StringUtil()
 
@@ -77,7 +76,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setGoalLabel() {
-        if (money.goal == 0) {
+        if (settings.monthLimit == 0) {
             binding.goalTextView.text = getString(R.string.set_goal_warning)
             return
         }
@@ -93,14 +92,13 @@ class MainActivity : AppCompatActivity() {
         binding.goalTextView.text = String.format(getString(R.string.goal_info_message),
             getMonth(),
             stringUtil.formatAmount(getSpendableMoney().toString()),
-            getCurrencyText(money.currency))
-
+            getCurrencyText())
     }
 
     private fun setUpPieChart() {
-        if(money.goal != null) {
+        if(settings.monthLimit != null) {
             val pieChart: PieChart = findViewById(R.id.spendsPieChart)
-            pieEntriesList = ArrayList<PieEntry>()
+            pieEntriesList = ArrayList()
             pieEntriesList.add(PieEntry(getThisMonthMoneySpent().toFloat()))
             pieEntriesList.add(PieEntry(getSpendableMoney().toFloat()))
             pieDataSet = PieDataSet(pieEntriesList, "")
@@ -114,7 +112,7 @@ class MainActivity : AppCompatActivity() {
             pieChart.legend.isEnabled = false
             pieChart.data = PieData(pieDataSet)
             pieChart.animateXY(500, 500)
-            pieChart.description.text = "";
+            pieChart.description.text = ""
         }
     }
     private fun getMonth(): String {
@@ -140,25 +138,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getCurrencyText(c: Currency) : String {
-
-        if(c == Currency.FORINT){
-            return getString(R.string.forint)
-        }
-        if(c == Currency.EURO){
-            return getString(R.string.euro)
-        }
-        return getString(R.string.dollar)
+    private fun getCurrencyText() : String {
+        return resources.getStringArray(R.array.can_spend_currencies)[settings.currencyIndex]
     }
 
     private fun getThisMonthMoneySpent() : Int {
-        var sum : Int = 0
+        var sum = 0
         for(p : Purchase in purchases.thisMonthPurchases) {
             sum += p.amount
         }
         return sum
     }
     private fun getSpendableMoney() : Int {
-        return money.goal - getThisMonthMoneySpent()
+        return settings.monthLimit - getThisMonthMoneySpent()
     }
 }

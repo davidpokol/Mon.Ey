@@ -1,64 +1,69 @@
 package com.example.money.activity
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.Spinner
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.example.money.R
-import com.example.money.enums.Currency
-import com.example.money.model.Money
+import com.example.money.model.Settings
+import com.example.money.model.SpinnerValues
 import com.example.money.util.StringUtil
-import java.text.DecimalFormat
-import java.text.NumberFormat
-import java.util.*
 
 
 class SettingsActivity : AppCompatActivity() {
 
-    private val money = Money()
+    private val settings = Settings()
     private val stringUtil = StringUtil()
 
     private lateinit var goalEditText: EditText
+    @SuppressLint("Recycle")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
-        goalEditText = findViewById(com.example.money.R.id.editTextNumber)
         supportActionBar?.hide()
-        goalEditText.addTextChangedListener(stringUtil.onTextChangedListener(goalEditText))
-        val currencySpinner: Spinner = findViewById(R.id.currency_spinner)
+        /*
+        val helper = MyDBHelper(this)
+        val db = helper.readableDatabase
+        val rs = db.rawQuery("SELECT * FROM settings", null)
 
-        if (money.goal != null && money.goal != 0) {
-            goalEditText.setText(stringUtil.formatAmount(money.goal.toString()))
+        if (rs.moveToFirst()) {
+
+            settings.goal = rs.getInt(1)
+            //TODO többi adat
+        } else {
+            Toast.makeText(this,
+                getString(R.string.database_error_toast), Toast.LENGTH_SHORT).show()
+        }
+        */
+
+        val currencySpinner: Spinner = findViewById(R.id.currency_spinner)
+        goalEditText = findViewById(R.id.editTextNumber)
+        goalEditText.addTextChangedListener(stringUtil.onTextChangedListener(goalEditText))
+
+        if (settings.monthLimit != null && settings.monthLimit != 0) {
+            goalEditText.setText(stringUtil.formatAmount(settings.monthLimit.toString()))
         }
 
-        currencySpinner.adapter = ArrayAdapter<Currency>(
-            this, android.R.layout.simple_spinner_item, Currency.values()
+        currencySpinner.adapter = ArrayAdapter(
+            this, android.R.layout.simple_spinner_item,
+            resources.getStringArray(R.array.currencies)
         )
 
-        currencySpinner.setSelection(Currency.values().indexOf(money.currency))
+        currencySpinner.setSelection(settings.currencyIndex)
 
         goalEditText.addTextChangedListener {
             try {
-                if(goalEditText.text.isEmpty()){
-                    money.goal = 0;
+                if (goalEditText.text.isEmpty()) {
+                    settings.monthLimit = 0
                 } else {
-                    money.goal = Integer.valueOf(
+                    settings.monthLimit = Integer.valueOf(
                         stringUtil.deFormatAmount(
-                            goalEditText.text.toString()
-                        )
+                            goalEditText.text.toString())
                     )
-
                 }
-
-            } catch (_: Exception) {
-            }
-
+            } catch (_: Exception) {}
         }
 
         currencySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -68,19 +73,15 @@ class SettingsActivity : AppCompatActivity() {
                 position: Int,
                 id: Long
             ) {
-                money.currency = currencySpinner.selectedItem as Currency
+                settings.currencyIndex = currencySpinner.selectedItemPosition
             }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-
-            }
+            override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
     }
-
 
     override fun onBackPressed() {
         super.onBackPressed()
         this.finish()
     }
-
 }

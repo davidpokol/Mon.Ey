@@ -1,26 +1,23 @@
 package com.example.money.model;
 
-import com.example.money.enums.Category;
-
 import java.util.Date;
-import com.example.money.enums.Currency;
 
 public class Purchase {
 
     private static int staticId = 0;
-    private int id;
+    private final int id;
     private final Date purchaseDate;
     private final String place;
     private final int amount;
-    private final Category category;
+    private final int categoryIndex;
 
 
-    public Purchase(Date purchaseDate, String place, int amount, Category category) {
-        this.id += staticId;
+    public Purchase(Date purchaseDate, String place, int amount, int categoryIndex) {
+        this.id = ++staticId;
         this.purchaseDate = purchaseDate;
         this.place = place;
         this.amount = amount;
-        this.category = category;
+        this.categoryIndex = categoryIndex;
     }
 
     public int getId() {
@@ -35,8 +32,8 @@ public class Purchase {
         return place;
     }
 
-    public Category getCategory() {
-        return category;
+    public int getCategory() {
+        return categoryIndex;
     }
 
     public int getAmount() {

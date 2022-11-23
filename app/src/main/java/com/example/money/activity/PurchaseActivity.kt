@@ -3,16 +3,14 @@ package com.example.money.activity
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
-import android.os.Build
+import android.media.MediaPlayer
 import android.os.Bundle
-import android.view.View
 import android.widget.*
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.money.R
-import com.example.money.enums.Category
 import com.example.money.model.Purchase
 import com.example.money.model.Purchases
+import com.example.money.model.SpinnerValues
 import com.example.money.util.StringUtil
 import java.text.SimpleDateFormat
 import java.util.*
@@ -23,7 +21,11 @@ class PurchaseActivity : AppCompatActivity() {
     private val purchases = Purchases()
     private val stringUtil = StringUtil()
     private val myCalendar = Calendar.getInstance()
+
     private lateinit var dateEditText: EditText
+    private lateinit var placeEditText: EditText
+    private lateinit var amountTextView: EditText
+    private lateinit var categorySpinner: Spinner
 
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,13 +34,13 @@ class PurchaseActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
 
-        dateEditText = findViewById(R.id.dateEditText)
 
-        val purchasePlaceEditText: EditText = findViewById(R.id.purchasePlaceEditText)
-        val amountTextView: EditText = findViewById(R.id.amountEditText)
-        val categorySpinner: Spinner = findViewById(R.id.categorySpinner)
+
         val submitButton: Button = findViewById(R.id.submitButton)
-        val categorySpinnerValue: Category = Category.OTHER
+        dateEditText = findViewById(R.id.dateEditText)
+        placeEditText = findViewById(R.id.purchasePlaceEditText)
+        amountTextView = findViewById(R.id.amountEditText)
+        categorySpinner = findViewById(R.id.categorySpinner)
 
         amountTextView.addTextChangedListener(stringUtil.onTextChangedListener(amountTextView))
         val date =
@@ -62,7 +64,8 @@ class PurchaseActivity : AppCompatActivity() {
         }
 
         categorySpinner.adapter = ArrayAdapter(
-            this, android.R.layout.simple_spinner_item, Category.values()
+            this, android.R.layout.simple_spinner_item,
+            resources.getStringArray(R.array.categories)
         )
 
         submitButton.setOnClickListener {
@@ -82,7 +85,7 @@ class PurchaseActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             try {
-                purchasePlace = purchasePlaceEditText.text.toString().trim()
+                purchasePlace = placeEditText.text.toString().trim()
                 if (purchasePlace.isEmpty()) {
                     throw Exception()
                 }
@@ -106,20 +109,24 @@ class PurchaseActivity : AppCompatActivity() {
                 return@setOnClickListener
 
             }
+
             addPurchaseToMonitorData(
                 Purchase(
                     date,
                     purchasePlace,
                     amount,
-                    categorySpinnerValue
+                    categorySpinner.selectedItemPosition
                 )
             )
 
+            submitButton.isSoundEffectsEnabled = false
+            MediaPlayer.create(this, R.raw.cash_machine).start()
+            submitButton.isSoundEffectsEnabled = true
             Toast.makeText(
                 applicationContext, getString(R.string.purchase_added),
                 Toast.LENGTH_LONG
             ).show()
-
+            resetInputFields()
         }
 
     }
@@ -129,12 +136,20 @@ class PurchaseActivity : AppCompatActivity() {
         this.finish()
     }
 
+
     private fun addPurchaseToMonitorData(p: Purchase) {
         purchases.addPurchase(p)
 
         if (p.purchaseDate.month == Date().month) {
             purchases.addThisMonthPurchase(p)
         }
+    }
+
+    private fun resetInputFields() {
+        dateEditText.setText("")
+        placeEditText.setText("")
+        amountTextView.setText("")
+        categorySpinner.setSelection(0)
     }
 
     private fun refreshMonitorData() {
