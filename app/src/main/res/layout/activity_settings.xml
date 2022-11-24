@@ -33,6 +33,20 @@
         app:layout_constraintTop_toBottomOf="@+id/goal_textView" />
 
     <TextView
+        android:id="@+id/currency_textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:text="@string/fav_category_label"
+        android:textAlignment="center"
+        android:textColor="@color/money_dark_green"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/currency_textView" />
+
+    <TextView
         android:id="@+id/settings_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -54,7 +68,7 @@
         android:layout_height="45dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="80dp"
-        android:background="@color/white"
+        android:background="@color/light_green"
         android:foregroundTint="@color/money_dark_green"
         android:spinnerMode="dropdown"
         android:textColor="@color/money_dark_green"
@@ -63,6 +77,21 @@
         app:layout_constraintStart_toEndOf="@+id/currency_textView"
         app:layout_constraintTop_toBottomOf="@+id/editTextNumber" />
 
+    <Spinner
+        android:id="@+id/fav_category_spinner"
+        android:layout_width="100dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="80dp"
+        android:background="@color/light_green"
+        android:foregroundTint="@color/money_dark_green"
+        android:spinnerMode="dialog"
+        android:textColor="@color/money_dark_green"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/currency_textView"
+        app:layout_constraintTop_toBottomOf="@+id/currency_spinner" />
+
     <TextView
         android:id="@+id/goal_textView"
         android:layout_width="wrap_content"
@@ -70,7 +99,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="50dp"
         android:gravity="center"
-        android:text="@string/goal_label"
+        android:text="@string/limit_label"
         android:textAlignment="center"
         android:textColor="@color/money_dark_green"
         android:textSize="20sp"
@@ -84,14 +113,28 @@
         android:layout_height="45dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="80dp"
-        android:background="@color/white"
+        android:background="@color/light_green"
         android:ems="10"
         android:inputType="number"
+        android:gravity="center"
         android:maxLength="9"
-        android:textColor="@color/money_dark_green"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/goal_textView"
         app:layout_constraintTop_toBottomOf="@+id/settings_textView" />
+
+    <Switch
+        android:id="@+id/sound_effect_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:checked="false"
+        android:text="@string/sound_effect_label"
+        android:textColor="@color/money_dark_green"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/currency_textView2"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

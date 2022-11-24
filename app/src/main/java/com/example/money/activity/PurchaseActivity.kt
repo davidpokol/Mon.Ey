@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.money.R
 import com.example.money.model.Purchase
 import com.example.money.model.Purchases
-import com.example.money.model.SpinnerValues
+import com.example.money.model.Settings
 import com.example.money.util.StringUtil
 import java.text.SimpleDateFormat
 import java.util.*
@@ -18,6 +18,7 @@ import java.util.*
 @SuppressLint("SimpleDateFormat")
 class PurchaseActivity : AppCompatActivity() {
 
+    private val settings = Settings()
     private val purchases = Purchases()
     private val stringUtil = StringUtil()
     private val myCalendar = Calendar.getInstance()
@@ -34,13 +35,12 @@ class PurchaseActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
 
-
-
         val submitButton: Button = findViewById(R.id.submitButton)
         dateEditText = findViewById(R.id.dateEditText)
         placeEditText = findViewById(R.id.purchasePlaceEditText)
         amountTextView = findViewById(R.id.amountEditText)
         categorySpinner = findViewById(R.id.categorySpinner)
+
 
         amountTextView.addTextChangedListener(stringUtil.onTextChangedListener(amountTextView))
         val date =
@@ -63,10 +63,16 @@ class PurchaseActivity : AppCompatActivity() {
             datePickerDialog.show()
         }
 
+        placeEditText.setOnFocusChangeListener { _, _ ->
+            placeEditText.setText(placeEditText.text.toString().trim())
+        }
+
         categorySpinner.adapter = ArrayAdapter(
             this, android.R.layout.simple_spinner_item,
             resources.getStringArray(R.array.categories)
         )
+
+        categorySpinner.setSelection(settings.favCategoryIndex)
 
         submitButton.setOnClickListener {
 
@@ -119,9 +125,12 @@ class PurchaseActivity : AppCompatActivity() {
                 )
             )
 
-            submitButton.isSoundEffectsEnabled = false
-            MediaPlayer.create(this, R.raw.cash_machine).start()
-            submitButton.isSoundEffectsEnabled = true
+            if (settings.isEnabledSoundEffects) {
+                submitButton.isSoundEffectsEnabled = false
+                MediaPlayer.create(this, R.raw.cash_machine).start()
+                submitButton.isSoundEffectsEnabled = true
+            }
+
             Toast.makeText(
                 applicationContext, getString(R.string.purchase_added),
                 Toast.LENGTH_LONG
@@ -149,7 +158,7 @@ class PurchaseActivity : AppCompatActivity() {
         dateEditText.setText("")
         placeEditText.setText("")
         amountTextView.setText("")
-        categorySpinner.setSelection(0)
+        categorySpinner.setSelection(settings.favCategoryIndex)
     }
 
     private fun refreshMonitorData() {

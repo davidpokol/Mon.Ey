@@ -29,9 +29,11 @@
     <string name="limit_exceeded_warning">Ajjaj, túllépted a havi limitet!\n😨😨</string>
 
     <!-- SETTINGS-->
-    <string name="currency_label">Pénznem:</string>
     <string name="settings_label">Beállítások</string>
-    <string name="goal_label">Havi cél:</string>
+    <string name="currency_label">Pénznem: </string>
+    <string name="fav_category_label">Kedvenc kategória: </string>
+    <string name="sound_effect_label">Hang effektek: </string>
+    <string name="limit_label">Havi limit:</string>
     <string name="database_error_toast">Adatbázis hiba!</string>
 
     <!--DROPDOWN MENUS-->

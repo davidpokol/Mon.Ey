@@ -6,6 +6,7 @@ public class Settings {
     private static Integer monthLimit = 0;
     private static int currencyIndex = 0;
     private static int favCategoryIndex = 0;
+    private static boolean EnabledSoundEffects = true;
 
     public Settings() {
     }
@@ -32,5 +33,13 @@ public class Settings {
 
     public void setFavCategoryIndex(Integer favCategoryIndex) {
         Settings.favCategoryIndex = favCategoryIndex;
+    }
+
+    public boolean isEnabledSoundEffects() {
+        return EnabledSoundEffects;
+    }
+
+    public void setEnabledSoundEffects(boolean enabledSoundEffects) {
+        EnabledSoundEffects = enabledSoundEffects;
     }
 }
