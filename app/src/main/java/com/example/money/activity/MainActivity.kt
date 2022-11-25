@@ -2,12 +2,15 @@ package com.example.money.activity
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.money.R
 import com.example.money.databinding.ActivityMainBinding
+import com.example.money.db.MyDBHelper
 import com.example.money.model.Settings
 import com.example.money.model.Purchase
 import com.example.money.model.Purchases
@@ -34,15 +37,17 @@ class MainActivity : AppCompatActivity() {
     private lateinit var pieEntriesList: ArrayList<PieEntry>
     private lateinit var pieDataSet: PieDataSet
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    private lateinit var myDBHelper: MyDBHelper
+    private lateinit var myDB: SQLiteDatabase
 
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Thread.sleep(1500)
         installSplashScreen()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         supportActionBar?.hide()
+
         binding.dateTextView.text = dateTimeUtil.getDateString()
 
         val currentHour = dateTimeUtil.getHour()
@@ -53,7 +58,9 @@ class MainActivity : AppCompatActivity() {
         } else {
             binding.greetingTextView.text = getString(R.string.greeting_night)
         }
-        setGoalLabel()
+
+        getLimitLabelDataFromDataBase()
+        setLimitLabel()
         setUpPieChart()
 
         binding.tabImageButton.setOnClickListener {
@@ -71,11 +78,29 @@ class MainActivity : AppCompatActivity() {
 
     public override fun onResume() {
         super.onResume()
-        setGoalLabel()
+        getLimitLabelDataFromDataBase()
+        setLimitLabel()
         setUpPieChart()
     }
 
-    private fun setGoalLabel() {
+
+    @SuppressLint("Recycle")
+    private fun getLimitLabelDataFromDataBase() {
+        myDBHelper = MyDBHelper(this)
+        myDB = myDBHelper.readableDatabase
+
+        val rs = myDB.rawQuery("SELECT month_limit, currency_index " +
+                "FROM settings", null)
+
+        if (rs.moveToFirst()) {
+            settings.monthLimit = rs.getInt(0)
+            settings.currencyIndex = rs.getInt(1)
+        } else {
+            Toast.makeText(this,
+                getString(R.string.database_error_toast), Toast.LENGTH_LONG).show()
+        }
+    }
+    private fun setLimitLabel() {
         if (settings.monthLimit == 0) {
             binding.goalTextView.text = getString(R.string.set_goal_warning)
             return

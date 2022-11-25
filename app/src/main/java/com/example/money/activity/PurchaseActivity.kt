@@ -3,11 +3,13 @@ package com.example.money.activity
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
+import android.database.sqlite.SQLiteDatabase
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.money.R
+import com.example.money.db.MyDBHelper
 import com.example.money.model.Purchase
 import com.example.money.model.Purchases
 import com.example.money.model.Settings
@@ -28,19 +30,21 @@ class PurchaseActivity : AppCompatActivity() {
     private lateinit var amountTextView: EditText
     private lateinit var categorySpinner: Spinner
 
+    private lateinit var myDBHelper: MyDBHelper
+    private lateinit var myDB: SQLiteDatabase
+
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_purchase)
         supportActionBar?.hide()
 
-
+        getDBData()
         val submitButton: Button = findViewById(R.id.submitButton)
         dateEditText = findViewById(R.id.dateEditText)
         placeEditText = findViewById(R.id.purchasePlaceEditText)
         amountTextView = findViewById(R.id.amountEditText)
         categorySpinner = findViewById(R.id.categorySpinner)
-
 
         amountTextView.addTextChangedListener(stringUtil.onTextChangedListener(amountTextView))
         val date =
@@ -143,6 +147,23 @@ class PurchaseActivity : AppCompatActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
         this.finish()
+    }
+
+    @SuppressLint("Recycle")
+    private fun getDBData() {
+        myDBHelper = MyDBHelper(this)
+        myDB = myDBHelper.readableDatabase
+
+        val rs = myDB.rawQuery("SELECT fav_category_index, enabled_sound_effects " +
+                "FROM settings", null)
+
+        if (rs.moveToFirst()) {
+            settings.favCategoryIndex = rs.getInt(0)
+            settings.isEnabledSoundEffects = rs.getInt(1) == 1
+        } else {
+            Toast.makeText(this,
+                getString(R.string.database_error_toast), Toast.LENGTH_LONG).show()
+        }
     }
 
 

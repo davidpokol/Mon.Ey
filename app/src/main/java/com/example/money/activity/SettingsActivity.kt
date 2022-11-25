@@ -2,6 +2,7 @@ package com.example.money.activity
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.view.View
 import android.widget.*
@@ -10,6 +11,7 @@ import androidx.core.widget.addTextChangedListener
 import com.example.money.R
 import com.example.money.db.MyDBHelper
 import com.example.money.model.Settings
+import com.example.money.util.DataUtil
 import com.example.money.util.StringUtil
 
 
@@ -17,18 +19,20 @@ class SettingsActivity : AppCompatActivity() {
 
     private val settings = Settings()
     private val stringUtil = StringUtil()
-
+    private val dataUtil = DataUtil()
 
     private lateinit var limitEditText: EditText
+    private lateinit var myDBHelper: MyDBHelper
+    private lateinit var myDB: SQLiteDatabase
     @SuppressLint("Recycle", "UseSwitchCompatOrMaterialCode")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
         supportActionBar?.hide()
 
-        val helper = MyDBHelper(this)
-        val db = helper.readableDatabase
-        var rs = db.rawQuery("SELECT * FROM settings", null)
+        myDBHelper = MyDBHelper(this)
+        myDB = myDBHelper.readableDatabase
+        val rs = myDB.rawQuery("SELECT * FROM settings", null)
 
         if (rs.moveToFirst()) {
             settings.monthLimit = rs.getInt(0)
@@ -37,9 +41,8 @@ class SettingsActivity : AppCompatActivity() {
             settings.isEnabledSoundEffects = rs.getInt(3) == 1
         } else {
             Toast.makeText(this,
-                getString(R.string.database_error_toast), Toast.LENGTH_SHORT).show()
+                getString(R.string.database_error_toast), Toast.LENGTH_LONG).show()
         }
-
 
         val currencySpinner: Spinner = findViewById(R.id.currency_spinner)
         val favCategorySpinner: Spinner = findViewById(R.id.fav_category_spinner)
@@ -68,13 +71,16 @@ class SettingsActivity : AppCompatActivity() {
 
         limitEditText.addTextChangedListener {
             try {
+                val cv = ContentValues()
                 if (limitEditText.text.isEmpty()) {
-                    settings.monthLimit = 0
+                    cv.put("month_limit",0)
+                    //settings.monthLimit = 0
                 } else {
-                    settings.monthLimit = Integer.valueOf(
+                    cv.put("month_limit",Integer.valueOf(
                         stringUtil.deFormatAmount(
                             limitEditText.text.toString())
-                    )
+                    ))
+                    myDB.update("settings", cv, null, null)
                 }
             } catch (_: Exception) {}
         }
@@ -86,7 +92,9 @@ class SettingsActivity : AppCompatActivity() {
                 position: Int,
                 id: Long
             ) {
-                settings.currencyIndex = currencySpinner.selectedItemPosition
+                val cv = ContentValues()
+                cv.put("currency_index", currencySpinner.selectedItemPosition)
+                myDB.update("settings", cv, null, null)
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {}
@@ -99,7 +107,9 @@ class SettingsActivity : AppCompatActivity() {
                 position: Int,
                 id: Long
             ) {
-                settings.favCategoryIndex = favCategorySpinner.selectedItemPosition
+                val cv = ContentValues()
+                cv.put("fav_category_index", favCategorySpinner.selectedItemPosition)
+                myDB.update("settings", cv, null, null)
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {}
@@ -108,11 +118,15 @@ class SettingsActivity : AppCompatActivity() {
         soundEffectSwitch.isChecked = settings.isEnabledSoundEffects
 
         soundEffectSwitch.setOnClickListener {
-            settings.isEnabledSoundEffects = soundEffectSwitch.isChecked
+
+            val cv = ContentValues()
+            cv.put("enabled_sound_effects", dataUtil.convertBoolToInt(soundEffectSwitch.isChecked))
+            myDB.update("settings", cv, null, null)
         }
     }
 
     override fun onBackPressed() {
+        myDB.close()
         super.onBackPressed()
         this.finish()
     }

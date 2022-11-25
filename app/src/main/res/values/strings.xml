@@ -24,7 +24,7 @@
 
 
     <string name="goal_info_message">%1$s, még %2$s %3$s költhetsz.</string>
-    <string name="set_goal_warning">Kérlek, állítsd be a havi célodat!\n💸💸💸</string>
+    <string name="set_goal_warning">Kérlek, állítsd be a havi limitedet!\n💸💸💸</string>
     <string name="limit_reached_warning">Sajnálom, elérted a havi limitet!\n😟😟</string>
     <string name="limit_exceeded_warning">Ajjaj, túllépted a havi limitet!\n😨😨</string>
 
