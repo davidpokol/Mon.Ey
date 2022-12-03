@@ -73,6 +73,17 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/tab_icon" />
 
+    <ImageView
+        android:id="@+id/tab_ImageButton3"
+        android:layout_width="50dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="148dp"
+        android:layout_marginEnd="12dp"
+        android:clickable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/tab_icon" />
+
     <TextView
         android:id="@+id/goal_textView"
         android:layout_width="wrap_content"

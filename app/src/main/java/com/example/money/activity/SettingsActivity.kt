@@ -24,6 +24,7 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var limitEditText: EditText
     private lateinit var myDBHelper: MyDBHelper
     private lateinit var myDB: SQLiteDatabase
+
     @SuppressLint("Recycle", "UseSwitchCompatOrMaterialCode")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,13 +41,15 @@ class SettingsActivity : AppCompatActivity() {
             settings.favCategoryIndex = rs.getInt(2)
             settings.isEnabledSoundEffects = rs.getInt(3) == 1
         } else {
-            Toast.makeText(this,
-                getString(R.string.database_error_toast), Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                this,
+                getString(R.string.database_error_toast), Toast.LENGTH_LONG
+            ).show()
         }
 
         val currencySpinner: Spinner = findViewById(R.id.currency_spinner)
         val favCategorySpinner: Spinner = findViewById(R.id.fav_category_spinner)
-        val soundEffectSwitch : Switch = findViewById(R.id.sound_effect_switch)
+        val soundEffectSwitch: Switch = findViewById(R.id.sound_effect_switch)
 
 
         limitEditText = findViewById(R.id.editTextNumber)
@@ -73,16 +76,20 @@ class SettingsActivity : AppCompatActivity() {
             try {
                 val cv = ContentValues()
                 if (limitEditText.text.isEmpty()) {
-                    cv.put("month_limit",0)
+                    cv.put("month_limit", 0)
                     //settings.monthLimit = 0
                 } else {
-                    cv.put("month_limit",Integer.valueOf(
-                        stringUtil.deFormatAmount(
-                            limitEditText.text.toString())
-                    ))
-                    myDB.update("settings", cv, null, null)
+                    cv.put(
+                        "month_limit", Integer.valueOf(
+                            stringUtil.deFormatAmount(
+                                limitEditText.text.toString()
+                            )
+                        )
+                    )
                 }
-            } catch (_: Exception) {}
+                myDB.update("settings", cv, null, null)
+            } catch (_: Exception) {
+            }
         }
 
         currencySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {

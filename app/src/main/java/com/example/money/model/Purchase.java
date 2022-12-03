@@ -4,16 +4,16 @@ import java.util.Date;
 
 public class Purchase {
 
-    private static int staticId = 0;
-    private final int id;
-    private final Date purchaseDate;
-    private final String place;
-    private final int amount;
-    private final int categoryIndex;
+    private int id;
+    private Date purchaseDate;
+    private String place;
+    private int amount;
+    private int categoryIndex;
 
+    public Purchase() {
+    }
 
     public Purchase(Date purchaseDate, String place, int amount, int categoryIndex) {
-        this.id = ++staticId;
         this.purchaseDate = purchaseDate;
         this.place = place;
         this.amount = amount;
@@ -24,19 +24,39 @@ public class Purchase {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public Date getPurchaseDate() {
         return purchaseDate;
+    }
+
+    public void setPurchaseDate(Date purchaseDate) {
+        this.purchaseDate = purchaseDate;
     }
 
     public String getPlace() {
         return place;
     }
 
-    public int getCategory() {
-        return categoryIndex;
+    public void setPlace(String place) {
+        this.place = place;
     }
 
     public int getAmount() {
         return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public int getCategoryIndex() {
+        return categoryIndex;
+    }
+
+    public void setCategoryIndex(int categoryIndex) {
+        this.categoryIndex = categoryIndex;
     }
 }

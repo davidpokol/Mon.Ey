@@ -1,25 +1,30 @@
 package com.example.money.util
 
 import android.annotation.SuppressLint
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
-import com.example.money.R
 import java.text.SimpleDateFormat
 import java.util.*
 
 @SuppressLint("SimpleDateFormat")
 class DateTimeUtil : AppCompatActivity(){
 
-    fun getDateString(): String {
+    private val dateFormatter = SimpleDateFormat("yyyy. MM. dd.")
+    private val monthFormatter = SimpleDateFormat("yyyy. MM.")
+    private val hourFormatter = SimpleDateFormat("HH")
 
-        val sdf = SimpleDateFormat("yyyy. MM. dd.")
-        return sdf.format(Date())
+    fun dateToString(date : Date): String {
+        return dateFormatter.format(date)
+    }
+
+    fun stringToDate(string : String): Date {
+        return dateFormatter.parse(string) as Date
+    }
+
+    fun getMonth(date : Date) : String {
+        return monthFormatter.format(date)
     }
 
     fun getHour(): Int {
-
-        val sdf = SimpleDateFormat("HH")
-        val currentDate = sdf.format(Date())
-        return currentDate.toInt()
+        return hourFormatter.format(Date()).toInt()
     }
 }

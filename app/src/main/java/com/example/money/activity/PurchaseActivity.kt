@@ -3,6 +3,7 @@ package com.example.money.activity
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
+import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -13,15 +14,17 @@ import com.example.money.db.MyDBHelper
 import com.example.money.model.Purchase
 import com.example.money.model.Purchases
 import com.example.money.model.Settings
+import com.example.money.util.DateTimeUtil
 import com.example.money.util.StringUtil
 import java.text.SimpleDateFormat
 import java.util.*
 
-@SuppressLint("SimpleDateFormat")
+@SuppressLint("Recycle", "SimpleDateFormat")
 class PurchaseActivity : AppCompatActivity() {
 
     private val settings = Settings()
     private val purchases = Purchases()
+    private val dateTimeUtil = DateTimeUtil()
     private val stringUtil = StringUtil()
     private val myCalendar = Calendar.getInstance()
 
@@ -31,7 +34,8 @@ class PurchaseActivity : AppCompatActivity() {
     private lateinit var categorySpinner: Spinner
 
     private lateinit var myDBHelper: MyDBHelper
-    private lateinit var myDB: SQLiteDatabase
+    private lateinit var insertMyDB: SQLiteDatabase
+    private lateinit var selectMyDB: SQLiteDatabase
 
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +43,10 @@ class PurchaseActivity : AppCompatActivity() {
         setContentView(R.layout.activity_purchase)
         supportActionBar?.hide()
 
+        myDBHelper = MyDBHelper(this)
         getDBData()
+        insertMyDB = myDBHelper.readableDatabase
+
         val submitButton: Button = findViewById(R.id.submitButton)
         dateEditText = findViewById(R.id.dateEditText)
         placeEditText = findViewById(R.id.purchasePlaceEditText)
@@ -120,6 +127,14 @@ class PurchaseActivity : AppCompatActivity() {
 
             }
 
+            val cv = ContentValues()
+            cv.put("date",dateTimeUtil.dateToString(date))
+            cv.put("place", purchasePlace)
+            cv.put("amount", amount)
+            cv.put("category", categorySpinner.selectedItemPosition)
+
+            insertMyDB.insert("purchases",null,cv)
+
             addPurchaseToMonitorData(
                 Purchase(
                     date,
@@ -145,16 +160,15 @@ class PurchaseActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+        insertMyDB.close()
         super.onBackPressed()
         this.finish()
     }
 
-    @SuppressLint("Recycle")
     private fun getDBData() {
-        myDBHelper = MyDBHelper(this)
-        myDB = myDBHelper.readableDatabase
+        selectMyDB = myDBHelper.readableDatabase
 
-        val rs = myDB.rawQuery("SELECT fav_category_index, enabled_sound_effects " +
+        val rs = selectMyDB.rawQuery("SELECT fav_category_index, enabled_sound_effects " +
                 "FROM settings", null)
 
         if (rs.moveToFirst()) {
@@ -164,15 +178,12 @@ class PurchaseActivity : AppCompatActivity() {
             Toast.makeText(this,
                 getString(R.string.database_error_toast), Toast.LENGTH_LONG).show()
         }
+        selectMyDB.close()
     }
 
 
     private fun addPurchaseToMonitorData(p: Purchase) {
         purchases.addPurchase(p)
-
-        if (p.purchaseDate.month == Date().month) {
-            purchases.addThisMonthPurchase(p)
-        }
     }
 
     private fun resetInputFields() {

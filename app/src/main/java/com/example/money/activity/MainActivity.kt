@@ -15,6 +15,7 @@ import com.example.money.model.Settings
 import com.example.money.model.Purchase
 import com.example.money.model.Purchases
 import com.example.money.util.DateTimeUtil
+import com.example.money.util.PurchaseUtil
 import com.example.money.util.StringUtil
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
@@ -25,30 +26,33 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-@SuppressLint("SimpleDateFormat")
+@SuppressLint("Recycle","SimpleDateFormat")
 class MainActivity : AppCompatActivity() {
 
     private val dateTimeUtil = DateTimeUtil()
     private val settings = Settings()
     private val purchases = Purchases()
     private val stringUtil = StringUtil()
+    private val purchaseUtil = PurchaseUtil()
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var pieEntriesList: ArrayList<PieEntry>
     private lateinit var pieDataSet: PieDataSet
 
     private lateinit var myDBHelper: MyDBHelper
-    private lateinit var myDB: SQLiteDatabase
+    private lateinit var settingsMyDB: SQLiteDatabase
+    private lateinit var purchasesMyDB: SQLiteDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        myDBHelper = MyDBHelper(this)
         Thread.sleep(1500)
         installSplashScreen()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.hide()
 
-        binding.dateTextView.text = dateTimeUtil.getDateString()
+        binding.dateTextView.text = dateTimeUtil.dateToString(Date())
 
         val currentHour = dateTimeUtil.getHour()
         if (currentHour < 9) {
@@ -59,7 +63,8 @@ class MainActivity : AppCompatActivity() {
             binding.greetingTextView.text = getString(R.string.greeting_night)
         }
 
-        getLimitLabelDataFromDataBase()
+        getPurchasesFromDatabase()
+        purchaseUtil.setupThisMonthPurchases()
         setLimitLabel()
         setUpPieChart()
 
@@ -74,33 +79,62 @@ class MainActivity : AppCompatActivity() {
             val s = Intent(this@MainActivity, PurchaseActivity::class.java)
             this.startActivity(s)
         }
+
+        binding.tabImageButton3.setOnClickListener {
+
+            val s = Intent(this@MainActivity, ListActivity::class.java)
+            this.startActivity(s)
+        }
     }
 
     public override fun onResume() {
         super.onResume()
-        getLimitLabelDataFromDataBase()
+        purchaseUtil.setupThisMonthPurchases()
         setLimitLabel()
         setUpPieChart()
     }
 
+    private fun getPurchasesFromDatabase() {
+        purchasesMyDB = myDBHelper.readableDatabase
 
-    @SuppressLint("Recycle")
+        val rs = purchasesMyDB.rawQuery("SELECT * FROM purchases", null)
+        if (rs.moveToFirst()) {
+            val purchase = Purchase()
+            do {
+
+                purchase.id = rs.getInt(0)
+                purchase.purchaseDate = dateTimeUtil.stringToDate(rs.getString(1))
+                purchase.place = rs.getString(2)
+                purchase.amount = rs.getInt(3)
+                purchase.categoryIndex = rs.getInt(4)
+                //TODO ha nem tartalmazza csekk
+                purchases.addPurchase(purchase)
+
+            } while (rs.moveToNext())
+        }
+    }
+
     private fun getLimitLabelDataFromDataBase() {
-        myDBHelper = MyDBHelper(this)
-        myDB = myDBHelper.readableDatabase
+        settingsMyDB = myDBHelper.readableDatabase
 
-        val rs = myDB.rawQuery("SELECT month_limit, currency_index " +
-                "FROM settings", null)
+        val rs = settingsMyDB.rawQuery(
+            "SELECT month_limit, currency_index " +
+                    "FROM settings", null
+        )
 
         if (rs.moveToFirst()) {
             settings.monthLimit = rs.getInt(0)
             settings.currencyIndex = rs.getInt(1)
         } else {
-            Toast.makeText(this,
-                getString(R.string.database_error_toast), Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                this,
+                getString(R.string.database_error_toast), Toast.LENGTH_LONG
+            ).show()
         }
     }
+
     private fun setLimitLabel() {
+        getLimitLabelDataFromDataBase()
         if (settings.monthLimit == 0) {
             binding.goalTextView.text = getString(R.string.set_goal_warning)
             return
@@ -114,25 +148,44 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        binding.goalTextView.text = String.format(getString(R.string.goal_info_message),
+        binding.goalTextView.text = String.format(
+            getString(R.string.goal_info_message),
             getMonth(),
             stringUtil.formatAmount(getSpendableMoney().toString()),
-            getCurrencyText())
+            getCurrencyText()
+        )
     }
 
     private fun setUpPieChart() {
-        if(settings.monthLimit != null) {
+        if (settings.monthLimit != null) {
             val pieChart: PieChart = findViewById(R.id.spendsPieChart)
             pieEntriesList = ArrayList()
-            pieEntriesList.add(PieEntry(getThisMonthMoneySpent().toFloat()))
-            pieEntriesList.add(PieEntry(getSpendableMoney().toFloat()))
-            pieDataSet = PieDataSet(pieEntriesList, "")
-            pieDataSet.setColors(
-                intArrayOf(
-                    Color.rgb(200, 200, 200),
-                    Color.rgb(0, 195, 110)
-                ), 255
-            )
+            if (getSpendableMoney() > 0) {
+                pieEntriesList.add(PieEntry(getThisMonthMoneySpent().toFloat()))
+                pieEntriesList.add(PieEntry(getSpendableMoney().toFloat()))
+                pieDataSet = PieDataSet(pieEntriesList, "")
+                pieDataSet.setColors(
+                    intArrayOf(
+                        Color.rgb(200, 200, 200), //GREY
+                        Color.rgb(0, 195, 110) // GREEN
+                    ), 255
+                )
+            } else {
+                pieEntriesList.add(PieEntry((settings.monthLimit-getThisMonthMoneySpent().toFloat())*-1 ))
+                pieEntriesList.add(
+                    PieEntry(
+                        getThisMonthMoneySpent().toFloat() - settings.monthLimit.toFloat() //120 - 100 = 20
+                    )
+                )
+                pieDataSet = PieDataSet(pieEntriesList, "")
+                pieDataSet.setColors(
+                    intArrayOf(
+                        Color.rgb(0, 195, 110), // GREEN
+                        Color.rgb(255, 0, 0) // RED
+                    ), 255
+                )
+            }
+
             pieDataSet.setDrawValues(false)
             pieChart.legend.isEnabled = false
             pieChart.data = PieData(pieDataSet)
@@ -140,6 +193,7 @@ class MainActivity : AppCompatActivity() {
             pieChart.description.text = ""
         }
     }
+
     private fun getMonth(): String {
 
         val sdf = SimpleDateFormat("MM")
@@ -163,18 +217,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getCurrencyText() : String {
+    private fun getCurrencyText(): String {
         return resources.getStringArray(R.array.can_spend_currencies)[settings.currencyIndex]
     }
 
-    private fun getThisMonthMoneySpent() : Int {
+    private fun getThisMonthMoneySpent(): Int {
         var sum = 0
-        for(p : Purchase in purchases.thisMonthPurchases) {
-            sum += p.amount
+        for (purchase in purchases.thisMonthPurchases) {
+            sum += purchase.amount
         }
         return sum
     }
-    private fun getSpendableMoney() : Int {
+
+    private fun getSpendableMoney(): Int {
         return settings.monthLimit - getThisMonthMoneySpent()
     }
 }

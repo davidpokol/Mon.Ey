@@ -87,6 +87,10 @@
         Kérlek, add meg a vársárlás összegét!
     </string>
 
+    <!--LIST PURCHASES-->
+    <string name="added_purchases">Hozzáadott vársárlások</string>
+
+
     <!-- UTIL -->
     <string name="empty_string"> </string>
 
