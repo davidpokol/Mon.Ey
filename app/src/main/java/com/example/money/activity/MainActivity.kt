@@ -5,15 +5,17 @@ import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.isVisible
 import com.example.money.R
 import com.example.money.databinding.ActivityMainBinding
 import com.example.money.db.MyDBHelper
 import com.example.money.model.Settings
 import com.example.money.model.Purchase
-import com.example.money.model.Purchases
 import com.example.money.util.DateTimeUtil
 import com.example.money.util.PurchaseUtil
 import com.example.money.util.StringUtil
@@ -31,7 +33,6 @@ class MainActivity : AppCompatActivity() {
 
     private val dateTimeUtil = DateTimeUtil()
     private val settings = Settings()
-    private val purchases = Purchases()
     private val stringUtil = StringUtil()
     private val purchaseUtil = PurchaseUtil()
 
@@ -63,55 +64,73 @@ class MainActivity : AppCompatActivity() {
             binding.greetingTextView.text = getString(R.string.greeting_night)
         }
 
-        getPurchasesFromDatabase()
-        purchaseUtil.setupThisMonthPurchases()
-        setLimitLabel()
-        setUpPieChart()
+        val purchases = getPurchasesToListFromDatabase()
+        val thisMonthMoneySpent = getThisMonthMoneySpent(purchases)
+        getLimitLabelDataFromDataBase()
+        setLimitLabel(settings.monthLimit - thisMonthMoneySpent)
+        setUpPieChart(thisMonthMoneySpent,settings.monthLimit - thisMonthMoneySpent)
 
-        binding.tabImageButton.setOnClickListener {
 
+        binding.limitTextView.setOnLongClickListener {
             val s = Intent(this@MainActivity, SettingsActivity::class.java)
             this.startActivity(s)
+            return@setOnLongClickListener true
         }
 
-        binding.tabImageButton2.setOnClickListener {
-
-            val s = Intent(this@MainActivity, PurchaseActivity::class.java)
-            this.startActivity(s)
-        }
-
-        binding.tabImageButton3.setOnClickListener {
-
-            val s = Intent(this@MainActivity, ListActivity::class.java)
-            this.startActivity(s)
-        }
+        popupMenu()
     }
 
     public override fun onResume() {
         super.onResume()
-        purchaseUtil.setupThisMonthPurchases()
-        setLimitLabel()
-        setUpPieChart()
+        val purchases = getPurchasesToListFromDatabase()
+        val thisMonthMoneySpent = getThisMonthMoneySpent(purchases)
+        getLimitLabelDataFromDataBase()
+        setLimitLabel(settings.monthLimit - thisMonthMoneySpent)
+        setUpPieChart(thisMonthMoneySpent,settings.monthLimit - thisMonthMoneySpent)
     }
 
-    private fun getPurchasesFromDatabase() {
+    private fun getPurchasesToListFromDatabase() : List<Purchase> {
         purchasesMyDB = myDBHelper.readableDatabase
 
+        val list = mutableListOf<Purchase>()
         val rs = purchasesMyDB.rawQuery("SELECT * FROM purchases", null)
         if (rs.moveToFirst()) {
-            val purchase = Purchase()
             do {
-
+                val purchase = Purchase()
                 purchase.id = rs.getInt(0)
                 purchase.purchaseDate = dateTimeUtil.stringToDate(rs.getString(1))
                 purchase.place = rs.getString(2)
                 purchase.amount = rs.getInt(3)
                 purchase.categoryIndex = rs.getInt(4)
-                //TODO ha nem tartalmazza csekk
-                purchases.addPurchase(purchase)
+                list.add(purchase)
+
+                println("a:" + purchase.amount)
 
             } while (rs.moveToNext())
         }
+        return list
+    }
+
+    private fun setLimitLabel(spendableMoney : Int) {
+        if (settings.monthLimit == 0) {
+            binding.limitTextView.text = getString(R.string.set_goal_warning)
+            return
+        }
+        if (spendableMoney == 0) {
+            binding.limitTextView.text = getString(R.string.limit_reached_warning)
+            return
+        }
+        if (spendableMoney < 0) {
+            binding.limitTextView.text = getString(R.string.limit_exceeded_warning)
+            return
+        }
+
+        binding.limitTextView.text = String.format(
+            getString(R.string.goal_info_message),
+            getMonth(),
+            stringUtil.formatAmount(spendableMoney.toString()),
+            getCurrencyText()
+        )
     }
 
     private fun getLimitLabelDataFromDataBase() {
@@ -133,36 +152,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setLimitLabel() {
-        getLimitLabelDataFromDataBase()
-        if (settings.monthLimit == 0) {
-            binding.goalTextView.text = getString(R.string.set_goal_warning)
-            return
-        }
-        if (getSpendableMoney() == 0) {
-            binding.goalTextView.text = getString(R.string.limit_reached_warning)
-            return
-        }
-        if (getSpendableMoney() < 0) {
-            binding.goalTextView.text = getString(R.string.limit_exceeded_warning)
-            return
-        }
+    private fun setUpPieChart(spent: Int, spendable: Int) {
 
-        binding.goalTextView.text = String.format(
-            getString(R.string.goal_info_message),
-            getMonth(),
-            stringUtil.formatAmount(getSpendableMoney().toString()),
-            getCurrencyText()
-        )
-    }
-
-    private fun setUpPieChart() {
-        if (settings.monthLimit != null) {
-            val pieChart: PieChart = findViewById(R.id.spendsPieChart)
+        val pieChart: PieChart = findViewById(R.id.spendsPieChart)
+        if (settings.monthLimit != 0 && spendable > 0 && settings.monthLimit != null) {
+            pieChart.isVisible = true
             pieEntriesList = ArrayList()
-            if (getSpendableMoney() > 0) {
-                pieEntriesList.add(PieEntry(getThisMonthMoneySpent().toFloat()))
-                pieEntriesList.add(PieEntry(getSpendableMoney().toFloat()))
+                pieEntriesList.add(PieEntry(spent.toFloat()))
+                pieEntriesList.add(PieEntry(spendable.toFloat()))
                 pieDataSet = PieDataSet(pieEntriesList, "")
                 pieDataSet.setColors(
                     intArrayOf(
@@ -170,29 +167,82 @@ class MainActivity : AppCompatActivity() {
                         Color.rgb(0, 195, 110) // GREEN
                     ), 255
                 )
-            } else {
-                pieEntriesList.add(PieEntry((settings.monthLimit-getThisMonthMoneySpent().toFloat())*-1 ))
-                pieEntriesList.add(
-                    PieEntry(
-                        getThisMonthMoneySpent().toFloat() - settings.monthLimit.toFloat() //120 - 100 = 20
-                    )
-                )
-                pieDataSet = PieDataSet(pieEntriesList, "")
-                pieDataSet.setColors(
-                    intArrayOf(
-                        Color.rgb(0, 195, 110), // GREEN
-                        Color.rgb(255, 0, 0) // RED
-                    ), 255
-                )
-            }
 
             pieDataSet.setDrawValues(false)
             pieChart.legend.isEnabled = false
             pieChart.data = PieData(pieDataSet)
             pieChart.animateXY(500, 500)
             pieChart.description.text = ""
+        } else {
+            pieChart.isVisible = false
+        }
+
+    }
+
+    @SuppressLint("DiscouragedPrivateApi")
+    private fun popupMenu() {
+        // creating a object of Popupmenu
+        val popupMenu = PopupMenu(this, binding.tabImageButton)
+
+        // we need to inflate the object
+        // with popup_menu.xml file
+        popupMenu.inflate(R.menu.popup_menu)
+
+        // adding click listener to image
+        popupMenu.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.settings_menu -> {
+                    val s = Intent(this@MainActivity, SettingsActivity::class.java)
+                    this.startActivity(s)
+                    true
+                }
+                R.id.add_purchase_menu -> {
+                    val s = Intent(this@MainActivity, PurchaseActivity::class.java)
+                    this.startActivity(s)
+                    true
+                }
+                R.id.list_purchases_menu -> {
+                    val s = Intent(this@MainActivity, ListActivity::class.java)
+                    this.startActivity(s)
+                    true
+                }
+                R.id.categorization_menu -> {
+                    val s = Intent(this@MainActivity, ListActivity::class.java)
+                    this.startActivity(s)
+                    true
+                }
+                R.id.about_menu -> {
+                    val s = Intent(this@MainActivity, AboutActivity::class.java)
+                    this.startActivity(s)
+                    true
+                }
+                else -> {
+                    true
+                }
+            }
+        }
+
+        binding.tabImageButton.setOnClickListener {
+            try {
+                val popup = PopupMenu::class.java.getDeclaredField("mPopup")
+                popup.isAccessible = true
+                val menu = popup.get(popupMenu)
+                menu.javaClass.getDeclaredMethod("setForceShowIcon", Boolean::class.java)
+                    .invoke(menu,true)
+            }
+            catch (e: Exception)
+            {
+                Log.d("error", e.toString())
+            }
+            finally {
+                popupMenu.show()
+            }
+            true
+
         }
     }
+
+
 
     private fun getMonth(): String {
 
@@ -221,15 +271,12 @@ class MainActivity : AppCompatActivity() {
         return resources.getStringArray(R.array.can_spend_currencies)[settings.currencyIndex]
     }
 
-    private fun getThisMonthMoneySpent(): Int {
+    private fun getThisMonthMoneySpent(purchases: List<Purchase>): Int {
         var sum = 0
-        for (purchase in purchases.thisMonthPurchases) {
+        val thisMonthPurchases = purchaseUtil.getThisMonthPurchases(purchases)
+        for (purchase in thisMonthPurchases) {
             sum += purchase.amount
         }
         return sum
-    }
-
-    private fun getSpendableMoney(): Int {
-        return settings.monthLimit - getThisMonthMoneySpent()
     }
 }

@@ -17,13 +17,13 @@
         android:theme="@style/Theme.MonEy"
         tools:targetApi="31">
         <activity
+            android:name=".activity.AboutActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.ListActivity"
             android:exported="false" />
         <activity
             android:name=".activity.PurchaseActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activity.ExchangeActivity"
             android:exported="false" />
         <activity
             android:name=".activity.SettingsActivity"

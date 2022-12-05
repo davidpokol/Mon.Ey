@@ -30,7 +30,7 @@
         android:textColor="@color/money_dark_green"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/goal_textView" />
+        app:layout_constraintTop_toBottomOf="@+id/developer_textView" />
 
     <TextView
         android:id="@+id/currency_textView2"
@@ -93,7 +93,7 @@
         app:layout_constraintTop_toBottomOf="@+id/currency_spinner" />
 
     <TextView
-        android:id="@+id/goal_textView"
+        android:id="@+id/developer_textView"
         android:layout_width="wrap_content"
         android:layout_height="45dp"
         android:layout_marginStart="30dp"
@@ -120,7 +120,7 @@
         android:maxLength="9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/goal_textView"
+        app:layout_constraintStart_toEndOf="@+id/developer_textView"
         app:layout_constraintTop_toBottomOf="@+id/settings_textView" />
 
     <Switch

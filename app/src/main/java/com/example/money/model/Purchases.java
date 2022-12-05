@@ -5,8 +5,8 @@ import java.util.List;
 
 public class Purchases {
 
-    private static final List<Purchase> purchaseList = new ArrayList<>();
-    private static List<Purchase> thisMonthPurchases = new ArrayList<>();
+    private final List<Purchase> purchaseList = new ArrayList<>();
+    private List<Purchase> thisMonthPurchases = new ArrayList<>();
 
     public Purchases() {
     }
@@ -29,7 +29,7 @@ public class Purchases {
     }
 
     public void setThisMonthPurchases(List<Purchase> thisMonthPurchases) {
-        Purchases.thisMonthPurchases = thisMonthPurchases;
+        this.thisMonthPurchases = thisMonthPurchases;
     }
 
     public List<Purchase> getThisMonthPurchases() {

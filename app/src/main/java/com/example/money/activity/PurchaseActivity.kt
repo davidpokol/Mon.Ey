@@ -23,7 +23,6 @@ import java.util.*
 class PurchaseActivity : AppCompatActivity() {
 
     private val settings = Settings()
-    private val purchases = Purchases()
     private val dateTimeUtil = DateTimeUtil()
     private val stringUtil = StringUtil()
     private val myCalendar = Calendar.getInstance()
@@ -45,7 +44,6 @@ class PurchaseActivity : AppCompatActivity() {
 
         myDBHelper = MyDBHelper(this)
         getDBData()
-        insertMyDB = myDBHelper.readableDatabase
 
         val submitButton: Button = findViewById(R.id.submitButton)
         dateEditText = findViewById(R.id.dateEditText)
@@ -53,7 +51,6 @@ class PurchaseActivity : AppCompatActivity() {
         amountTextView = findViewById(R.id.amountEditText)
         categorySpinner = findViewById(R.id.categorySpinner)
 
-        amountTextView.addTextChangedListener(stringUtil.onTextChangedListener(amountTextView))
         val date =
             OnDateSetListener { _, year, month, day ->
                 myCalendar.set(Calendar.YEAR, year)
@@ -74,9 +71,14 @@ class PurchaseActivity : AppCompatActivity() {
             datePickerDialog.show()
         }
 
-        placeEditText.setOnFocusChangeListener { _, _ ->
+        placeEditText.setOnFocusChangeListener { _ , _ ->
             placeEditText.setText(placeEditText.text.toString().trim())
         }
+
+
+        amountTextView.addTextChangedListener(
+            stringUtil.onTextChangedListener(amountTextView)
+        )
 
         categorySpinner.adapter = ArrayAdapter(
             this, android.R.layout.simple_spinner_item,
@@ -133,17 +135,10 @@ class PurchaseActivity : AppCompatActivity() {
             cv.put("amount", amount)
             cv.put("category", categorySpinner.selectedItemPosition)
 
-            insertMyDB.insert("purchases",null,cv)
 
-            addPurchaseToMonitorData(
-                Purchase(
-                    date,
-                    purchasePlace,
-                    amount,
-                    categorySpinner.selectedItemPosition
-                )
-            )
-
+            insertMyDB = myDBHelper.readableDatabase
+            insertMyDB.insert("purchases",null, cv)
+            insertMyDB.close()
             if (settings.isEnabledSoundEffects) {
                 submitButton.isSoundEffectsEnabled = false
                 MediaPlayer.create(this, R.raw.cash_machine).start()
@@ -160,7 +155,6 @@ class PurchaseActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        insertMyDB.close()
         super.onBackPressed()
         this.finish()
     }
@@ -181,11 +175,6 @@ class PurchaseActivity : AppCompatActivity() {
         selectMyDB.close()
     }
 
-
-    private fun addPurchaseToMonitorData(p: Purchase) {
-        purchases.addPurchase(p)
-    }
-
     private fun resetInputFields() {
         dateEditText.setText("")
         placeEditText.setText("")
@@ -193,18 +182,9 @@ class PurchaseActivity : AppCompatActivity() {
         categorySpinner.setSelection(settings.favCategoryIndex)
     }
 
-    private fun refreshMonitorData() {
-        for (p: Purchase in purchases.thisMonthPurchases) {
-            if (p.purchaseDate.month != Date().month) {
-                purchases.removePurchaseById(p.id)
-            }
-        }
-    }
-
     private fun updateLabel() {
         val myFormat = "yyyy. MM. dd."
         val dateFormat = SimpleDateFormat(myFormat)
         dateEditText.setText(dateFormat.format(myCalendar.time))
     }
-
 }

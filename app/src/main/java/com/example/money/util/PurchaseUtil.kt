@@ -6,19 +6,17 @@ import java.util.*
 
 class PurchaseUtil {
     private val dateTimeUtil = DateTimeUtil()
-    private val purchases = Purchases()
-    private lateinit var thisMonthPurchases : MutableList<Purchase>
 
-    fun getMonthPurchases(monthDate: Date) : List<Purchase> {
-        thisMonthPurchases = mutableListOf()
-        for (purchase in purchases.purchaseList) {
+    fun getMonthPurchases(list: List<Purchase>, monthDate: Date) : List<Purchase> {
+        val result = mutableListOf<Purchase>()
+        for (purchase in list) {
             if (dateTimeUtil.getMonth(monthDate) == dateTimeUtil.getMonth(purchase.purchaseDate)) {
-                thisMonthPurchases.add(purchase)
+                result.add(purchase)
             }
         }
-         return thisMonthPurchases
+         return result
     }
-    fun setupThisMonthPurchases() {
-        purchases.thisMonthPurchases = getMonthPurchases(Date())
+    fun getThisMonthPurchases(list: List<Purchase>) : List<Purchase> {
+        return getMonthPurchases(list, Date())
     }
 }

@@ -3,6 +3,7 @@ package com.example.money.util
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
+import android.widget.Toast
 import java.text.DecimalFormat
 import java.text.NumberFormat
 
@@ -17,14 +18,12 @@ class StringUtil {
                 try {
                     if (editText.text.toString().isNotEmpty()) {
                         editText.removeTextChangedListener(this)
-                        editText.setText(formatAmount(s.toString()))
+                        editText.setText(formatAmount(editText.text.toString()))
                         editText.setSelection(editText.text.length)
+                        editText.addTextChangedListener(this)
                     }
                 } catch (_: Exception) {
-                } finally {
-                    editText.addTextChangedListener(this)
                 }
-
             }
         }
     }

@@ -119,7 +119,7 @@
     </androidx.gridlayout.widget.GridLayout>
 
     <ImageButton
-        android:id="@+id/previousButton"
+        android:id="@+id/email_button"
         android:layout_centerHorizontal="true"
         android:padding="20dp"
         app:cornerRadius="30dp"
@@ -154,5 +154,25 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gridLayout"
         app:layout_constraintVertical_bias="0.497" />
+
+    <ImageButton
+        android:id="@+id/deleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/delete_red"
+        android:gravity="center"
+        android:padding="20dp"
+        android:paddingTop="7dp"
+        android:src="@drawable/bin_delete"
+        app:cornerRadius="30dp"
+        app:flow_horizontalAlign="center"
+        app:flow_verticalAlign="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gridLayout"
+        app:layout_constraintVertical_bias="0.912" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

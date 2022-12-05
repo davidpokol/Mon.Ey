@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/settings_menu"
+        android:icon="@drawable/settings_icon"
+        android:title="@string/settings_label" />
+    <item
+        android:id="@+id/add_purchase_menu"
+        android:icon="@drawable/add_purchase_icon"
+        android:title="@string/add_purchase_label" />
+    <item
+        android:id="@+id/list_purchases_menu"
+        android:icon="@drawable/list_purchases_icon"
+        android:title="@string/added_purchases" />
+    <item
+        android:id="@+id/categorization_menu"
+        android:icon="@drawable/categorization_icon"
+        android:title="@string/category" />
+    <item
+        android:id="@+id/about_menu"
+        android:icon="@drawable/about_icon"
+        android:title="@string/about" />
+
+</menu>

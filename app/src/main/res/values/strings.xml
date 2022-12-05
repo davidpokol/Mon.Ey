@@ -2,93 +2,122 @@
     <string name="app_name">Mon.Ey</string>
 
     <!--MAIN ACTIVITY-->
-    <string name="greeting_morning">Szép reggelt!</string>
-    <string name="greeting_afternoon">Szép napot!</string>
-    <string name="greeting_night">Szép estét!</string>
+    <string name="greeting_morning">Good morning!</string>
+    <string name="greeting_afternoon">Good afternoon!</string>
+    <string name="greeting_night">Good evening!</string>
 
     <!-- months -->
-    <string name="in_month_january">Januárban</string>
-    <string name="in_month_february">Februárban</string>
-    <string name="in_month_march">Márciusban</string>
-    <string name="in_month_april">Áprilisban</string>
-    <string name="in_month_may">Májusban</string>
-    <string name="in_month_june">Júniusban</string>
-    <string name="in_month_july">Júliusban</string>
-    <string name="in_month_august">Augusztusban</string>
-    <string name="in_month_september">Szeptemberben</string>
-    <string name="in_month_october">Októberben</string>
-    <string name="in_month_november">Novemberben</string>
-    <string name="in_month_december">Decemberben</string>
+    <string name="in_month_january">In January</string>
+    <string name="in_month_february">In February</string>
+    <string name="in_month_march">In March</string>
+    <string name="in_month_april">In April</string>
+    <string name="in_month_may">In May</string>
+    <string name="in_month_june">In June</string>
+    <string name="in_month_july">In July</string>
+    <string name="in_month_august">In August</string>
+    <string name="in_month_september">In September</string>
+    <string name="in_month_october">In October</string>
+    <string name="in_month_november">In November</string>
+    <string name="in_month_december">In December</string>
 
     <!-- currencies -->
 
 
-    <string name="goal_info_message">%1$s, még %2$s %3$s költhetsz.</string>
-    <string name="set_goal_warning">Kérlek, állítsd be a havi limitedet!\n💸💸💸</string>
-    <string name="limit_reached_warning">Sajnálom, elérted a havi limitet!\n😟😟</string>
-    <string name="limit_exceeded_warning">Ajjaj, túllépted a havi limitet!\n😨😨</string>
+    <string name="goal_info_message">%1$s, you can spend another %2$s %3$s.</string>
+    <string name="set_goal_warning">Please, set up your monthly limit!\n💸💸💸</string>
+    <string name="limit_reached_warning">Sorry, you\'ve reached your monthly limit!\n😟😟</string>
+    <string name="limit_exceeded_warning">OMG, you\'ve exceeded your monthly limit!\n😨😨</string>
 
     <!-- SETTINGS-->
-    <string name="settings_label">Beállítások</string>
-    <string name="currency_label">Pénznem: </string>
-    <string name="fav_category_label">Kedvenc kategória: </string>
-    <string name="sound_effect_label">Hang effektek: </string>
-    <string name="limit_label">Havi limit:</string>
-    <string name="database_error_toast">Adatbázis hiba!</string>
+    <string name="settings_label">Settings</string>
+    <string name="currency_label">Currency: </string>
+    <string name="fav_category_label">Favourite category: </string>
+    <string name="sound_effect_label">Sound effects: </string>
+    <string name="limit_label">Monthly limit:</string>
+    <string name="database_error_toast">Database error!</string>
 
     <!--DROPDOWN MENUS-->
     <string-array name="can_spend_currencies">
-        <item>forintot</item>
-        <item>dollárt</item>
-        <item>eurót</item>
+        <item>forint</item>
+        <item>dollar</item>
+        <item>euro</item>
     </string-array>
 
     <string-array name="currencies">
         <item>Forint</item>
-        <item>Dollár</item>
-        <item>Euró</item>
+        <item>Dollar</item>
+        <item>Euro</item>
     </string-array>
 
     <string-array name="categories">
-        <item>Számlák</item>            <!-- Bills-->
-        <item>Vendéglátás</item>        <!-- Restaurants & Bars-->
-        <item>Szórakozás</item>         <!-- Entertainment-->
-        <item>Adomány</item>            <!-- Donation-->
-        <item>Bevársárlás</item>        <!-- Groceries-->
-        <item>Egészség, szépség</item>  <!-- Health and wellness-->
-        <item>Közlekedés</item>         <!-- Transportation-->
-        <item>Otthon</item>             <!-- Home accessories-->
-        <item>Ruházat</item>            <!-- Clothing-->
-        <item>Szállás, utazás</item>    <!-- Travels-->
-        <item>Egyéb</item>              <!-- Other-->
+        <item>Bills</item>
+        <item>Restaurants &amp; Bars</item>
+        <item>Entertainment</item>
+        <item>Donation</item>
+        <item>Groceries</item>
+        <item>Health and wellness</item>
+        <item>Transportation</item>
+        <item>Home accessories</item>
+        <item>Clothing</item>
+        <item>Travels</item>
+        <item>Other</item>
     </string-array>
 
     <!--ADD PURCHASE-->
-    <string name="add_purchase_label">Vársárlás hozzáadása</string>
+    <string name="add_purchase_label">Add purchase</string>
 
-    <string name="category">kategória</string>
-    <string name="currency">valuta</string>
-    <string name="amount">összeg</string>
-    <string name="place_of_purchase">vársárlás helye</string>
-    <string name="date">dátum</string>
-    <string name="purchase_added">Vársárlás hozzáadva!</string>
+    <string name="category">category</string>
+    <string name="currency">currency</string>
+    <string name="amount">amount</string>
+    <string name="place_of_purchase">place of purchase</string>
+    <string name="date">date</string>
+    <string name="purchase_added">Purchase added!</string>
 
-    <string name="add_purchase_button_label">HOZZÁAD</string>
+    <string name="add_purchase_button_label">ADD</string>
 
     <string name="fill_date_field_warning">
-        Kérlek, add meg a vársárlás dátumát!
+        Please, enter the date of your purchase!
     </string>
 
     <string name="fill_place_field_warning">
-        Kérlek, add meg a vársárlás helyét!
+       Please, enter the place of your purchase!
     </string>
 
     <string name="fill_amount_field_warning">
-        Kérlek, add meg a vársárlás összegét!
+        Please, enter the amount of your purchase!
     </string>
 
     <!--LIST PURCHASES-->
-    <string name="added_purchases">Hozzáadott vársárlások</string>
+    <string name="added_purchases">Added purchases</string>
+
+
+    <string name="delete_purchase">Delete purchase</string>
+    <string name="are_you_sure_deleting">Are you sure you want to delete this purchase?</string>
+    <string name="positive_button_yes">Yes</string>
+    <string name="positive_button_okay">Okay</string>
+    <string name="negative_button">Cancel</string>
+    <string name="no_added_purchase">No added purchases!</string>
+
+    <!--ABOUT-->
+    <string name="about">About</string>
+
+    <string name="developer">Developer:</string>
+    <string name="developer_name">David Pokol</string>
+
+    <string name="app_version">Version:</string>
+    <string name="app_version_number">v1.00</string>
+
+    <string name="rate_the_app">Rate the app!</string>
+    <string name="bug_found">You found a bug?\nLet me know!</string>
+
+    <string name="find_my_money_button">FIND MY MONEY</string>
+    <string name="find_my_money_found_button">I FOUND IT!</string>
+
+    <string name="money_find_error">I\'m afraid, this phone doesn\'t have a money finder😢</string>
+
+    <string name="bugfix_mail_subject">Mon.ey application bug</string><!-- Mon.ey app bugfix -->
+
+    <string name="email_error">An error occurred while opening the mailing app!</string>
 
 
     <!-- UTIL -->

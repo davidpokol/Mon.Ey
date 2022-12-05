@@ -1,0 +1,126 @@
+<resources>
+    <string name="app_name">Mon.Ey</string>
+
+    <!--MAIN ACTIVITY-->
+    <string name="greeting_morning">Szép reggelt!</string>
+    <string name="greeting_afternoon">Szép napot!</string>
+    <string name="greeting_night">Szép estét!</string>
+
+    <!-- months -->
+    <string name="in_month_january">Januárban</string>
+    <string name="in_month_february">Februárban</string>
+    <string name="in_month_march">Márciusban</string>
+    <string name="in_month_april">Áprilisban</string>
+    <string name="in_month_may">Májusban</string>
+    <string name="in_month_june">Júniusban</string>
+    <string name="in_month_july">Júliusban</string>
+    <string name="in_month_august">Augusztusban</string>
+    <string name="in_month_september">Szeptemberben</string>
+    <string name="in_month_october">Októberben</string>
+    <string name="in_month_november">Novemberben</string>
+    <string name="in_month_december">Decemberben</string>
+
+    <!-- currencies -->
+
+
+    <string name="goal_info_message">%1$s, még %2$s %3$s költhetsz.</string>
+    <string name="set_goal_warning">Kérlek, állítsd be a havi limitedet!\n💸💸💸</string>
+    <string name="limit_reached_warning">Sajnálom, elérted a havi limitet!\n😟😟</string>
+    <string name="limit_exceeded_warning">Ajjaj, túllépted a havi limitet!\n😨😨</string>
+
+    <!-- SETTINGS-->
+    <string name="settings_label">Beállítások</string>
+    <string name="currency_label">Pénznem: </string>
+    <string name="fav_category_label">Kedvenc kategória: </string>
+    <string name="sound_effect_label">Hang effektek: </string>
+    <string name="limit_label">Havi limit:</string>
+    <string name="database_error_toast">Adatbázis hiba!</string>
+
+    <!--DROPDOWN MENUS-->
+    <string-array name="can_spend_currencies">
+        <item>forintot</item>
+        <item>dollárt</item>
+        <item>eurót</item>
+    </string-array>
+
+    <string-array name="currencies">
+        <item>Forint</item>
+        <item>Dollár</item>
+        <item>Euró</item>
+    </string-array>
+
+    <string-array name="categories">
+        <item>Számlák</item>            <!-- Bills-->
+        <item>Vendéglátás</item>        <!-- Restaurants & Bars-->
+        <item>Szórakozás</item>         <!-- Entertainment-->
+        <item>Adomány</item>            <!-- Donation-->
+        <item>Bevásárlás</item>        <!-- Groceries-->
+        <item>Egészség, szépség</item>  <!-- Health and wellness-->
+        <item>Közlekedés</item>         <!-- Transportation-->
+        <item>Otthon</item>             <!-- Home accessories-->
+        <item>Ruházat</item>            <!-- Clothing-->
+        <item>Szállás, utazás</item>    <!-- Travels-->
+        <item>Egyéb</item>              <!-- Other-->
+    </string-array>
+
+    <!--ADD PURCHASE-->
+    <string name="add_purchase_label">Vásárlás hozzáadása</string>
+
+    <string name="category">kategória</string>
+    <string name="currency">valuta</string>
+    <string name="amount">összeg</string>
+    <string name="place_of_purchase">vásárlás helye</string>
+    <string name="date">dátum</string>
+    <string name="purchase_added">Vásárlás hozzáadva!</string>
+
+    <string name="add_purchase_button_label">HOZZÁAD</string>
+
+    <string name="fill_date_field_warning">
+        Kérlek, add meg a vásárlás dátumát!
+    </string>
+
+    <string name="fill_place_field_warning">
+        Kérlek, add meg a vásárlás helyét!
+    </string>
+
+    <string name="fill_amount_field_warning">
+        Kérlek, add meg a vásárlás összegét!
+    </string>
+
+    <!--LIST PURCHASES-->
+    <string name="added_purchases">Hozzáadott vásárlások</string>
+
+
+    <string name="delete_purchase">Vásárlás törlése</string>
+    <string name="are_you_sure_deleting">Biztosan kitörlöd ezt a vásárlást?</string>
+    <string name="positive_button_yes">Igen</string>
+    <string name="positive_button_okay">Rendben</string>
+    <string name="negative_button">Mégsem</string>
+    <string name="no_added_purchase">Nincs hozzáadott vásárlás!</string>
+
+    <!--ABOUT-->
+    <string name="about">Az alkalmazásról</string>
+
+    <string name="developer">Fejlesztő:</string>
+    <string name="developer_name">Pokol Dávid</string>
+
+    <string name="app_version">Verzió:</string>
+    <string name="app_version_number">v1.00</string>
+
+    <string name="rate_the_app">Értékeld az alkalmazást!</string>
+    <string name="bug_found">Hibát találtál?\nJelezd nekem!</string>
+
+    <string name="find_my_money_button">HOL A PÉNZEM?</string>
+    <string name="find_my_money_found_button">MEGTALÁLTAM!</string>
+
+    <string name="money_find_error">Sajnos ebben a készülékben nincs pénzkereső😢</string>
+
+    <string name="bugfix_mail_subject">Mon.ey applikáció hiba</string><!-- Mon.ey app bugfix -->
+
+    <string name="email_error">"Hiba történt a levelezőprogram megnyitásakor!"</string>
+
+
+    <!-- UTIL -->
+    <string name="empty_string"> </string>
+
+</resources>

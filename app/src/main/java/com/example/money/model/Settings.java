@@ -3,10 +3,10 @@ package com.example.money.model;
 
 public class Settings {
 
-    private static Integer monthLimit = 0;
-    private static int currencyIndex = 0;
-    private static int favCategoryIndex = 0;
-    private static boolean EnabledSoundEffects = true;
+    private Integer monthLimit = 0;
+    private int currencyIndex = 0;
+    private int favCategoryIndex = 0;
+    private boolean EnabledSoundEffects = true;
 
     public Settings() {
     }
@@ -16,7 +16,7 @@ public class Settings {
     }
 
     public void setMonthLimit(Integer goal) {
-        Settings.monthLimit = goal;
+        this.monthLimit = goal;
     }
 
     public Integer getCurrencyIndex() {
@@ -24,7 +24,7 @@ public class Settings {
     }
 
     public void setCurrencyIndex(Integer currency) {
-        Settings.currencyIndex = currency;
+        this.currencyIndex = currency;
     }
 
     public int getFavCategoryIndex() {
@@ -32,7 +32,7 @@ public class Settings {
     }
 
     public void setFavCategoryIndex(Integer favCategoryIndex) {
-        Settings.favCategoryIndex = favCategoryIndex;
+        this.favCategoryIndex = favCategoryIndex;
     }
 
     public boolean isEnabledSoundEffects() {
