@@ -11,8 +11,6 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.money.R
 import com.example.money.db.MyDBHelper
-import com.example.money.model.Purchase
-import com.example.money.model.Purchases
 import com.example.money.model.Settings
 import com.example.money.util.DateTimeUtil
 import com.example.money.util.StringUtil

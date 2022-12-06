@@ -207,7 +207,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.categorization_menu -> {
-                    val s = Intent(this@MainActivity, ListActivity::class.java)
+                    val s = Intent(this@MainActivity, CategoryActivity::class.java)
                     this.startActivity(s)
                     true
                 }

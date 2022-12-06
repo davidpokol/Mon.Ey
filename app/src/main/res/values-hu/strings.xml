@@ -73,6 +73,8 @@
     <string name="date">dátum</string>
     <string name="purchase_added">Vásárlás hozzáadva!</string>
 
+    <string name="date_hint">kopp ide</string>
+    <string name="place_of_purchase_hint">pl.: TESCO</string>
     <string name="add_purchase_button_label">HOZZÁAD</string>
 
     <string name="fill_date_field_warning">
@@ -119,6 +121,8 @@
 
     <string name="email_error">"Hiba történt a levelezőprogram megnyitásakor!"</string>
 
+    <!--CATEGORIZATION-->
+    <string name="categorization">Kategorizálás</string>
 
     <!-- UTIL -->
     <string name="empty_string"> </string>

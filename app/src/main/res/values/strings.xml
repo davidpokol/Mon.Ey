@@ -73,6 +73,8 @@
     <string name="date">date</string>
     <string name="purchase_added">Purchase added!</string>
 
+    <string name="date_hint">knock here</string>
+    <string name="place_of_purchase_hint">e.g.: TESCO</string>
     <string name="add_purchase_button_label">ADD</string>
 
     <string name="fill_date_field_warning">
@@ -108,7 +110,7 @@
     <string name="app_version_number">v1.00</string>
 
     <string name="rate_the_app">Rate the app!</string>
-    <string name="bug_found">You found a bug?\nLet me know!</string>
+    <string name="bug_found">Found a bug?\nLet me know!</string>
 
     <string name="find_my_money_button">FIND MY MONEY</string>
     <string name="find_my_money_found_button">I FOUND IT!</string>
@@ -119,6 +121,8 @@
 
     <string name="email_error">An error occurred while opening the mailing app!</string>
 
+    <!--CATEGORIZATION-->
+    <string name="categorization">Categorization</string>
 
     <!-- UTIL -->
     <string name="empty_string"> </string>

@@ -1,7 +1,6 @@
 package com.example.money.util
 
 import com.example.money.model.Purchase
-import com.example.money.model.Purchases
 import java.util.*
 
 class PurchaseUtil {

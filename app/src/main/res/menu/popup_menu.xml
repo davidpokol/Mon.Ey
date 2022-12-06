@@ -15,7 +15,7 @@
     <item
         android:id="@+id/categorization_menu"
         android:icon="@drawable/categorization_icon"
-        android:title="@string/category" />
+        android:title="@string/categorization" />
     <item
         android:id="@+id/about_menu"
         android:icon="@drawable/about_icon"
